@@ -9,10 +9,10 @@
 (function ($) {
 	// Define defaults
 	var defaults = {
-		columnHeader: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split(''),
-		columnHeaderIndex: 0,
-		rowIndex: 0
+		columnHeader: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('')
 	};
+	
+    var	columnHeaderIndex = rowIndex = 0;
 	
 	// Define available methods
     var methods = {
@@ -24,24 +24,60 @@
             	$(this).append("<thead></thead>");
             	$(this).append("<tbody></tbody>");
             	
-            	$("thead", $(this)).append("<tr class='spreadsheet-row'><th>&nbsp;</th><th class='spreadsheet-column'>" + settings.columnHeader[settings.columnHeaderIndex++] + "</th></tr>");
-            	$("tbody", $(this)).append("<tr class='spreadsheet-row'><th>" + settings.rowIndex++ + "</th><td><input class='spreadsheet-input' value='' /></td></tr>");
+            	$("thead", $(this)).append("<tr class='spreadsheet-row'><th>&nbsp;</th><th class='spreadsheet-column'>" + settings.columnHeader[columnHeaderIndex++] + "</th></tr>");
+            	$("tbody", $(this)).append("<tr class='spreadsheet-row'><th>" + rowIndex++ + "</th><td><input class='spreadsheet-input' value='' /></td></tr>");
+            	
+            	$(this).on("focus", "input", methods.setCoordinates);
+            	$(this).on("keyup", "input", methods.navigate);
             });
         },
         addRow: function(options) {
         	var settings = $.extend(defaults, options);
         	
         	return this.each(function() {
-        		$(this).append("<tr class='spreadsheet-row'><th>" + settings.rowIndex++ + "</th><td><input class='spreadsheet-input' value='' /></td></tr>");
+        		$(this).append("<tr class='spreadsheet-row'><th>" + rowIndex++ + "</th><td><input class='spreadsheet-input' value='' /></td></tr>");
 			});
         },
         addColumn: function(options) {
         	var settings = $.extend(defaults, options);
         	
         	return this.each(function() {
-        		$("thead tr", $(this)).first().append("<th class='spreadsheet-column'>" + settings.columnHeader[settings.columnHeaderIndex++] + "</th>");
+        		$("thead tr", $(this)).first().append("<th class='spreadsheet-column'>" + settings.columnHeader[columnHeaderIndex++] + "</th>");
         		$("tbody tr", $(this)).first().append("<td><input class='spreadsheet-input' value='' /></td>");
 			});
+        },
+        addColumnCell: function() {
+            
+        },
+        addRowCell: function() {
+            
+        },
+        navigate: function(e) {            
+            switch(e.which) {
+                case 9:
+                    // TAB
+                    if ($(this).closest("td").next("td").length === 0) {
+                        e.preventDefault();
+                        $(this).closest("table").spreadsheet("addColumn");
+                    }
+                    break;
+                case 13:
+                    // ENTER
+                    if ($(this).closest("tr").next("tr").length === 0) {
+                        e.preventDefault();
+                        $(this).closest("table").spreadsheet("addRow");
+                    }
+                    break;
+                default:
+                    // Do nothing                
+            }
+        },
+        setCoordinates: function() {
+            columnHeaderIndex = $(this).closest("td").index();
+    		rowIndex = $(this).closest("tr").index();
+    		
+            $("#columnIndex").text(columnHeaderIndex);
+            $("#rowIndex").text(rowIndex);
         },
 		destroy: function() {
 			return this.each(function() {
