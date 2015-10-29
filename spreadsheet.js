@@ -12,7 +12,8 @@
 		columnHeader: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('')
 	};
 	
-    var	columnHeaderIndex = rowIndex = 0;
+    var	columnHeaderIndex = 1,
+        rowIndex = 0;
 	
 	// Define available methods
     var methods = {
@@ -24,7 +25,7 @@
             	$(this).append("<thead></thead>");
             	$(this).append("<tbody></tbody>");
             	
-            	$("thead", $(this)).append("<tr class='spreadsheet-row'><th>&nbsp;</th><th class='spreadsheet-column'>" + settings.columnHeader[columnHeaderIndex++] + "</th></tr>");
+            	$("thead", $(this)).append("<tr class='spreadsheet-row'><th>&nbsp;</th><th class='spreadsheet-column'>" + settings.columnHeader[0] + "</th></tr>");
             	$("tbody", $(this)).append("<tr class='spreadsheet-row'><th>" + rowIndex++ + "</th><td><input class='spreadsheet-input' value='' /></td></tr>");
             	
             	$(this).on("focus", "input", methods.setCoordinates);
@@ -35,7 +36,7 @@
         	var settings = $.extend(defaults, options);
         	
         	return this.each(function() {
-        		$(this).append("<tr class='spreadsheet-row'><th>" + rowIndex++ + "</th><td><input class='spreadsheet-input' value='' /></td></tr>");
+        		$(this).append("<tr class='spreadsheet-row'><th>" + ++rowIndex + "</th><td><input class='spreadsheet-input' value='' /></td></tr>");
 			});
         },
         addColumn: function(options) {
