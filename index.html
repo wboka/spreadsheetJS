@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+		<title>SpreadsheetJS</title>
+		<meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+    </head>
+    <body>
+		<h1>SpreadsheetJS</h1>
+		<button type="button" id="addRow" class="add-button">Add Row</button>
+		<button type="button" id="addColumn" class="add-button">Add Column</button>
+		<table id="table1"></table>
+		<script type="text/javascript" src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+        <script type="text/javascript" src="spreadsheet.js"></script>
+		<script type="text/javascript">
+			$(document).ready(function() {
+				$("table").spreadsheet();
+				
+				$("button.add-button").on("click", function() {
+					$("table").spreadsheet(this.id);	
+				});
+			});
+		</script>
+    </body>
+</html>
