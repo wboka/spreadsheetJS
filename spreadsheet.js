@@ -1,6 +1,6 @@
 /**
  *  @author 		Wayne T Boka
- *  @lastmodified 	201510291600
+ *  @lastmodified 	201512101600
  *  @version		0.2.0
  *  @description	Plugin for html based spreadsheets
  *  @website		http://wboka.github.io/spreadsheetJS
