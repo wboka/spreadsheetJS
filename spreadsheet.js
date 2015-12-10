@@ -1,7 +1,7 @@
 /**
  *  @author 		Wayne T Boka
- *  @lastmodified 	201510291630
- *  @version		0.1.0
+ *  @lastmodified 	201510291600
+ *  @version		0.2.0
  *  @description	Plugin for html based spreadsheets
  *  @website		http://wboka.github.io/spreadsheetJS
  */
@@ -29,19 +29,39 @@
             });
         },
         addRow: function(options) {
-        	var settings = $.extend(defaults, options);
+        	var settings = $.extend(defaults, options),
+        		columnsToAdd = $("th", $("table tr").first()).length - 1;
         	
         	return this.each(function() {
-        		$(this).append("<tr class='spreadsheet-row'><th>" + settings.rowIndex++ + "</th><td><input class='spreadsheet-input' value='' /></td></tr>");
+        		rowHTML = "<tr class='spreadsheet-row'><th>" + settings.rowIndex++ + "</th>";
+        		
+        		rowHTML += methods.addColumns(columnsToAdd);
+        		
+        		rowHTML += "</tr>";
+        		
+        		$(this).append(rowHTML);
 			});
         },
         addColumn: function(options) {
-        	var settings = $.extend(defaults, options);
+        	var settings = $.extend(defaults, options),
+        		rowsToAdd = $("table tbody tr").length;
         	
         	return this.each(function() {
         		$("thead tr", $(this)).first().append("<th class='spreadsheet-column'>" + settings.columnHeader[settings.columnHeaderIndex++] + "</th>");
-        		$("tbody tr", $(this)).first().append("<td><input class='spreadsheet-input' value='' /></td>");
+        		
+        		for (var i = 0; i < rowsToAdd; i++) { 
+        			$("tbody tr", $(this)).eq(i).append("<td><input class='spreadsheet-input' value='' /></td>");
+        		}
 			});
+        },
+        addColumns: function(numberOfColumns) {
+        	var rowHTML = "";
+        	
+        	for (var i = 0; i < numberOfColumns; i++) {
+    			rowHTML += "<td><input class='spreadsheet-input' value='' /></td>";
+    		}
+        	
+        	return rowHTML;
         },
 		destroy: function() {
 			return this.each(function() {
